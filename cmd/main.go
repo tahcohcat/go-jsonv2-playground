@@ -20,11 +20,8 @@ type Payload struct {
 var timeRFC3339 = json.MarshalFunc(func(t time.Time) ([]byte, error) {
 	return []byte(`"` + t.Format(time.RFC3339) + `"`), nil
 })
-var bigFloatAsString = json.MarshalFunc(func(f any) ([]byte, error) {
-	if bf, ok := f.(*big.Float); ok {
-		return []byte(`"` + bf.Text('g', -1) + `"`), nil
-	}
-	return nil, nil
+var bigFloatAsString = json.MarshalFunc(func(f *big.Float) ([]byte, error) {
+	return []byte(`"` + f.Text('g', -1) + `"`), nil
 })
 
 func defaultHandler(w http.ResponseWriter, r *http.Request) {
